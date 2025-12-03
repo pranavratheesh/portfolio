@@ -1,0 +1,886 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Hero Section -->
+<div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
+
+        <!-- SLIDE 1 -->
+        <div class="swiper-slide">
+            <div class="big-word">DEVELOP</div>
+            <div class="slide-content">
+                <img src="{% static 'images/pranav.png' %}" class="cutout-img" alt="Pranav">
+                <div class="text-block">
+                    <h1>Hi, I'm Pranav</h1>
+                    <p>Full-Stack Developer crafting scalable and impactful digital solutions.</p>
+                    <div class="slide-ctas">
+                        <a href="{% static 'files/Resume.Pranav C.pdf' %}" class="btn" download>
+                            <i class="fas fa-download"></i>
+                            DOWNLOAD CV
+                        </a>
+                        <a href="https://github.com/pranavratheesh" target="_blank" class="btn-slide">
+                            <i class="fab fa-github"></i>
+                            GITHUB
+                        </a>
+                        <a href="#" class="btn-slide">
+                            <i class="fab fa-linkedin-in"></i>
+                            LINKEDIN
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+       <div class="swiper-slide">
+    <div class="big-word">BUILD</div>
+    <div class="slide-content">
+        <img src="{% static 'images/pranav5.png' %}" class="cutout-img" alt="Build Projects">
+        <div class="text-block">
+            <h1>I Build Scalable Products</h1>
+            <p>Turning complex ideas into elegant, production-ready applications that perform at scale.</p>
+            <div class="slide-ctas">
+                <a href="#projects" class="btn-slide btn-slide-primary">
+                    <i class="fas fa-layer-group"></i>
+                    VIEW PROJECTS
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="big-word">INNOVATE</div>
+    <div class="slide-content">
+        <img src="{% static 'images/pranav6.png' %}" class="cutout-img" alt="Innovate Solutions">
+        <div class="text-block">
+            <h1>I Solve Problems Elegantly</h1>
+            <p>Writing clean, efficient code that enhances user experience and drives performance.</p>
+            <div class="slide-ctas">
+                <a href="#contact" class="btn-slide btn-slide-primary">
+                    <i class="fas fa-paper-plane"></i>
+                    LET'S TALK
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <!-- Controls -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+</div>
+
+<!-- Featured Projects -->
+<section id="projects" class="section projects-section">
+    <div class="container">
+        <!-- Animated Title -->
+        <div class="section-header">
+            <div class="title-wrapper">
+                <span class="title-bg">PROJECTS</span>
+                <h2 class="section-title animated-title">FEATURED <span class="highlight">WORKS</span></h2>
+            </div>
+            <p class="section-subtitle">Crafting digital experiences with precision and innovation</p>
+        </div>
+
+        <!-- Project Filter -->
+        <div class="project-filters">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="web">Web Apps</button>
+            <button class="filter-btn" data-filter="mobile">Mobile</button>
+            <button class="filter-btn" data-filter="fullstack">Full Stack</button>
+            <button class="filter-btn" data-filter="opensource">Open Source</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid dynamic-grid">
+            {% for project in featured_projects %}
+            {% with first_tech=project.get_technologies_list.0|default:"django"|lower %}
+            <div class="project-card card-{{ forloop.counter }} {{ first_tech }}"
+                data-category="{% if forloop.counter|divisibleby:2 %}web{% else %}fullstack{% endif %}">
+            {% endwith %}
+
+                <!-- Project Card Header -->
+                <div class="card-header">
+                    <div class="project-badge">
+                        <span class="badge-icon">🚀</span>
+                        <span class="badge-text">Featured</span>
+                    </div>
+                    <div class="project-number">0{{ forloop.counter }}</div>
+                </div>
+
+                <!-- Project Image with Hover Effect -->
+                <div class="project-media">
+                    {% if project.image %}
+                    <div class="image-container">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <span class="view-text">VIEW PROJECT</span>
+                                <div class="overlay-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="project-placeholder">
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div class="placeholder-title">{{ project.title|truncatechars:15 }}</div>
+                            <div class="placeholder-tech">{{ project.get_technologies_list.0|default:"Django" }}</div>
+                        </div>
+                        <div class="placeholder-pattern"></div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Project Content -->
+                <div class="project-content">
+                    <div class="project-meta">
+                        <span class="project-date">2024</span>
+                        <span class="project-type">
+                            <i class="fas fa-cube"></i>
+                            {% if forloop.counter|divisibleby:2 %}Web Application{% else %}Full Stack{% endif %}
+                        </span>
+                    </div>
+
+                    <h3 class="project-title">
+                        <span class="title-text">{{ project.title }}</span>
+                        <span class="title-line"></span>
+                    </h3>
+
+                    <p class="project-description">{{ project.short_description }}</p>
+
+                    <!-- Technology Stack -->
+                    <div class="tech-stack">
+                        <div class="stack-header">
+                            <span class="stack-label">TECH STACK</span>
+                            <span class="stack-count">{{ project.get_technologies_list|length }} technologies</span>
+                        </div>
+                        <div class="tech-tags">
+                            {% for tech in project.get_technologies_list %}
+                                {% if forloop.counter <= 4 %}
+                                <span class="tech-tag tag-animate" data-tech="{{ tech }}">
+                                    <span class="tech-icon">
+                                        {% if "python" in tech|lower %}
+                                        <i class="fab fa-python"></i>
+                                        {% elif "django" in tech|lower %}
+                                        <i class="fas fa-database"></i>
+                                        {% elif "react" in tech|lower %}
+                                        <i class="fab fa-react"></i>
+                                        {% elif "js" in tech|lower or "javascript" in tech|lower %}
+                                        <i class="fab fa-js-square"></i>
+                                        {% else %}
+                                        <i class="fas fa-code"></i>
+                                        {% endif %}
+                                    </span>
+                                    {{ tech }}
+                                </span>
+                                {% endif %}
+                            {% endfor %}
+                            {% if project.get_technologies_list|length > 4 %}
+                            <span class="tech-tag more-tag">
+                                +{{ project.get_technologies_list|length|add:"-4" }} more
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Project Links -->
+                    <div class="project-actions">
+                        {% if project.project_url %}
+                        <a href="{{ project.project_url }}" class="action-btn demo-btn" target="_blank">
+                            <span class="btn-text">LIVE DEMO</span>
+                            <span class="btn-icon">
+                                <i class="fas fa-external-link-alt"></i>
+                            </span>
+                            <span class="btn-underline"></span>
+                        </a>
+                        {% endif %}
+
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" class="action-btn github-btn" target="_blank">
+                            <span class="btn-text">CODE</span>
+                            <span class="btn-icon">
+                                <i class="fab fa-github"></i>
+                            </span>
+                            <span class="btn-underline"></span>
+                        </a>
+                        {% endif %}
+
+                        <button class="action-btn details-btn" data-project="{{ project.id }}">
+                            <span class="btn-text">DETAILS</span>
+                            <span class="btn-icon">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Stats -->
+
+            </div>
+            {% empty %}
+
+            <!-- Empty State with Animation -->
+            <div class="empty-state">
+                <div class="empty-animation">
+                    <div class="code-line line-1"></div>
+                    <div class="code-line line-2"></div>
+                    <div class="code-line line-3"></div>
+                    <div class="code-line line-4"></div>
+                    <div class="terminal-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                </div>
+                <div class="empty-content">
+                    <h3>Crafting Amazing Projects</h3>
+                    <p>Currently working on innovative solutions. New projects coming soon!</p>
+                    <div class="coming-soon">
+                        <span class="soon-badge">SOON</span>
+                        <span class="soon-text">Stay tuned for updates</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- View All Button with Animation -->
+        <div class="view-all-container">
+            <a href="{% url 'projects' %}" class="view-all-btn">
+                <span class="btn-circle">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="btn-text">EXPLORE ALL PROJECTS</span>
+                <span class="btn-count">{{ featured_projects|length|default:"10" }}+</span>
+            </a>
+
+            <div class="project-stats-total">
+                <div class="total-stat">
+                    <div class="total-value">1+</div>
+                    <div class="total-label">Years Learning</div>
+                </div>
+                <div class="total-stat">
+                    <div class="total-value">3+</div>
+                    <div class="total-label">Projects Built</div>
+                </div>
+                <div class="total-stat">
+                    <div class="total-value">10+</div>
+                    <div class="total-label">Technologies</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="section skills-section">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <div class="title-wrapper">
+                <span class="title-bg">TECH STACK</span>
+                <h2 class="section-title">MY <span class="highlight">TECHNOLOGY</span> TOOLBOX</h2>
+            </div>
+            <p class="section-subtitle">Technologies I've mastered and tools I work with daily</p>
+        </div>
+
+        <!-- Technology Stack Grid -->
+        <div class="tech-stack-grid">
+            <!-- Python -->
+            <div class="tech-card" data-tech="python">
+                <div class="tech-icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">Python</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Advanced</span>
+                        <span class="tech-years">3+ Years</span>
+                    </div>
+                    <p class="tech-description">Backend development, automation, data analysis</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Django</span>
+                        <span class="framework-tag">Flask</span>
+                        <span class="framework-tag">ML Basics</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- Django -->
+            <div class="tech-card" data-tech="django">
+                <div class="tech-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">Django</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Intermediate</span>
+                        <span class="tech-years">2+ Years</span>
+                    </div>
+                    <p class="tech-description">Full-stack web development, REST APIs, authentication</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Django REST</span>
+                        <span class="framework-tag">ORM</span>
+                        <span class="framework-tag">Admin</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- Flask -->
+            <div class="tech-card" data-tech="flask">
+                <div class="tech-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">Flask</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Intermediate</span>
+                        <span class="tech-years">1+ Year</span>
+                    </div>
+                    <p class="tech-description">Lightweight web apps, microservices, APIs</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">RESTful</span>
+                        <span class="framework-tag">Jinja2</span>
+                        <span class="framework-tag">WTForms</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- Machine Learning -->
+            <div class="tech-card" data-tech="ml">
+                <div class="tech-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">Machine Learning</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Basics</span>
+                        <span class="tech-years">Learning</span>
+                    </div>
+                    <p class="tech-description">Fundamentals of ML algorithms and data science</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Scikit-learn</span>
+                        <span class="framework-tag">NumPy</span>
+                        <span class="framework-tag">Pandas</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- MySQL -->
+            <div class="tech-card" data-tech="mysql">
+                <div class="tech-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">MySQL</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Intermediate</span>
+                        <span class="tech-years">2+ Years</span>
+                    </div>
+                    <p class="tech-description">Relational database management, queries, optimization</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">SQL</span>
+                        <span class="framework-tag">Indexing</span>
+                        <span class="framework-tag">Joins</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- PostgreSQL -->
+            <div class="tech-card" data-tech="postgresql">
+                <div class="tech-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">PostgreSQL</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Intermediate</span>
+                        <span class="tech-years">1+ Year</span>
+                    </div>
+                    <p class="tech-description">Advanced SQL features, JSON support, transactions</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Advanced SQL</span>
+                        <span class="framework-tag">JSONB</span>
+                        <span class="framework-tag">Performance</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- HTML5 -->
+            <div class="tech-card" data-tech="html">
+                <div class="tech-icon">
+                    <i class="fab fa-html5"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">HTML5</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Advanced</span>
+                        <span class="tech-years">3+ Years</span>
+                    </div>
+                    <p class="tech-description">Semantic markup, responsive design, modern APIs</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Semantic</span>
+                        <span class="framework-tag">Accessibility</span>
+                        <span class="framework-tag">SEO</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+
+            <!-- CSS3 -->
+            <div class="tech-card" data-tech="css">
+                <div class="tech-icon">
+                    <i class="fab fa-css3-alt"></i>
+                </div>
+                <div class="tech-content">
+                    <h3 class="tech-name">CSS3</h3>
+                    <div class="tech-meta">
+                        <span class="tech-level">Advanced</span>
+                        <span class="tech-years">3+ Years</span>
+                    </div>
+                    <p class="tech-description">Modern layouts, animations, responsive design</p>
+                    <div class="tech-frameworks">
+                        <span class="framework-tag">Flexbox</span>
+                        <span class="framework-tag">Grid</span>
+                        <span class="framework-tag">Animations</span>
+                    </div>
+                </div>
+                <div class="tech-glow"></div>
+            </div>
+        </div>
+
+        <!-- Additional Skills -->
+
+        <!-- Skill Progression Timeline -->
+
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="section experience-section">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="title-text">EXPERIENCE</span>
+                <span class="title-line"></span>
+            </h2>
+            <p class="section-subtitle">Professional journey and growth</p>
+        </div>
+
+        <!-- Experience List -->
+        <div class="experience-list">
+            {% for exp in experiences %}
+            <div class="experience-item">
+                <!-- Logo Column -->
+                <div class="experience-logo">
+                    {% if exp.company_logo %}
+                    <img src="{{ exp.company_logo.url }}" alt="{{ exp.company }} logo" 
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-fallback\'>{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper }}{% endif %}</div>';">
+                    {% else %}
+                    <div class="logo-fallback">{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper }}{% endif %}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Content Column -->
+                <div class="experience-content">
+                    <!-- Date -->
+                    <div class="experience-meta">
+                        <span class="date">
+                            {{ exp.start_date }} — {% if exp.current %}Present{% else %}{{ exp.end_date }}{% endif %}
+                        </span>
+                        {% if exp.current %}
+                        <span class="current-tag">
+                            <span class="current-dot"></span>
+                            Current
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Company & Position -->
+                    <div class="experience-header">
+                        <h3 class="company">{{ exp.company }}</h3>
+                        <div class="position">{{ exp.title }}</div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="experience-description">
+                        {{ exp.description|linebreaks }}
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="experience-skills">
+                        <span class="skill">Development</span>
+                        <span class="skill">Problem Solving</span>
+                        <span class="skill">Teamwork</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            
+            <!-- Learning Journey (For Students) -->
+            <div class="learning-journey">
+                <div class="learning-header">
+                    <svg viewBox="0 0 24 24" width="24" height="24" class="learning-icon">
+                        <path fill="currentColor" d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                    </svg>
+                    <div>
+                        <h3>Learning Journey</h3>
+                        <p>Continuous growth through self-learning and projects</p>
+                    </div>
+                </div>
+
+                <!-- Learning Timeline -->
+                <div class="learning-timeline">
+                    <div class="learning-item">
+                        <div class="year">2021</div>
+                        <div class="content">
+                            <h4>Started Programming</h4>
+                            <p>Python fundamentals and web development basics</p>
+                        </div>
+                    </div>
+                    <div class="learning-item">
+                        <div class="year">2022</div>
+                        <div class="content">
+                            <h4>Full-Stack Development</h4>
+                            <p>Django, Flask, and modern web technologies</p>
+                        </div>
+                    </div>
+                    <div class="learning-item">
+                        <div class="year">2023</div>
+                        <div class="content">
+                            <h4>Advanced Concepts</h4>
+                            <p>Database design, REST APIs, and system architecture</p>
+                        </div>
+                    </div>
+                    <div class="learning-item">
+                        <div class="year">2024</div>
+                        <div class="content">
+                            <h4>Present Focus</h4>
+                            <p>Building complex projects and exploring new technologies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<div id="contact" class="contact-section" style="text-align: center; margin: 2rem 0;">
+    <h3 style="color: #070707; margin-bottom: 1rem;">Let's Connect</h3>
+    
+    <a href="mailto:pranavc493@gmail.com" 
+       class="contact-btn email-btn" 
+       style="display: inline-block; 
+              background: black;
+              color: white;
+              text-decoration: none;
+              padding: 1.2rem 2.5rem;
+              border-radius: 50px;
+              font-size: 1.2rem;
+              font-weight: 600;
+              transition: all 0.3s ease;
+              margin: 0.5rem;">
+        <i class="fas fa-envelope"></i>
+        Email Me
+    </a>
+    
+    <a href="https://wa.me/917736707020?text=Hi%20Pranav,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect" 
+       target="_blank" 
+       class="contact-btn whatsapp-btn" 
+       style="display: inline-block; 
+              background: black;
+              color: white;
+              text-decoration: none;
+              padding: 1.2rem 2.5rem;
+              border-radius: 50px;
+              font-size: 1.2rem;
+              font-weight: 600;
+              transition: all 0.3s ease;
+              margin: 0.5rem;">
+        <i class="fab fa-whatsapp"></i>
+        WhatsApp
+    </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".hero-swiper", {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            dynamicBullets: true
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        speed: 1000,
+        effect: "fade",
+        fadeEffect: {
+            crossFade: true
+        },
+        parallax: true,
+        grabCursor: true,
+        keyboard: {
+            enabled: true,
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+
+                // Filter project cards
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Tech tag animation
+        const techTags = document.querySelectorAll('.tech-tag');
+        techTags.forEach(tag => {
+            tag.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-2px) scale(1.05)';
+            });
+
+            tag.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Project card hover effects
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                const titleLine = this.querySelector('.title-line');
+                if (titleLine) {
+                    titleLine.style.width = '100%';
+                }
+            });
+
+            card.addEventListener('mouseleave', function () {
+                const titleLine = this.querySelector('.title-line');
+                if (titleLine) {
+                    titleLine.style.width = '0';
+                }
+            });
+        });
+
+        // Details button functionality
+        const detailsBtns = document.querySelectorAll('.details-btn');
+        detailsBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const projectId = this.dataset.project;
+                alert('Project details for ID: ' + projectId + ' would open here.');
+            });
+        });
+
+        // Animate project cards on load
+        setTimeout(() => {
+            projectCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }, 500);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Tech card animations
+        const techCards = document.querySelectorAll('.tech-card');
+
+        techCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+
+            // Hover effect enhancement
+            card.addEventListener('mouseenter', function () {
+                const icon = this.querySelector('.tech-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) rotate(5deg)';
+                }
+            });
+
+            card.addEventListener('mouseleave', function () {
+                const icon = this.querySelector('.tech-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0)';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Timeline item animations
+            const timelineItems = document.querySelectorAll('.timeline-item, .path-item');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            timelineItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+
+                setTimeout(() => {
+                    observer.observe(item);
+                }, index * 100);
+            });
+
+            // Experience card hover effect
+            const experienceCards = document.querySelectorAll('.experience-card');
+            experienceCards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    const dot = this.closest('.timeline-item').querySelector('.dot-core');
+                    if (dot) {
+                        dot.style.transform = 'scale(1.5)';
+                    }
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    const dot = this.closest('.timeline-item').querySelector('.dot-core');
+                    if (dot) {
+                        dot.style.transform = 'scale(1)';
+                    }
+                });
+            });
+
+            // Tag hover effect
+            const tags = document.querySelectorAll('.tag');
+            tags.forEach(tag => {
+                tag.addEventListener('mouseenter', function () {
+                    this.style.color = '#fff';
+                });
+
+                tag.addEventListener('mouseleave', function () {
+                    this.style.color = '';
+                });
+            });
+
+            // Learning path items
+            const pathItems = document.querySelectorAll('.path-item');
+            pathItems.forEach((item, index) => {
+                const line = item.querySelector('.path-line');
+                if (line) {
+                    setTimeout(() => {
+                        line.style.width = '100%';
+                        line.style.transition = 'width 0.8s ease';
+                    }, index * 200);
+                }
+            });
+
+            // Skill items hover
+            const skillItems = document.querySelectorAll('.skill-item');
+            skillItems.forEach(item => {
+                item.addEventListener('mouseenter', function () {
+                    this.style.borderColor = 'rgba(255,255,255,0.1)';
+                    this.style.transform = 'translateX(4px)';
+                });
+
+                item.addEventListener('mouseleave', function () {
+                    this.style.borderColor = '';
+                    this.style.transform = '';
+                });
+            });
+        });
+
+        // Skill tags interaction
+        const skillTags = document.querySelectorAll('.skill-tag');
+        skillTags.forEach(tag => {
+            tag.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-2px) scale(1.05)';
+            });
+
+            tag.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Framework tags interaction
+        const frameworkTags = document.querySelectorAll('.framework-tag');
+        frameworkTags.forEach(tag => {
+            tag.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-1px)';
+            });
+
+            tag.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Timeline animation
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(0)';
+                }
+            });
+        }, { threshold: 0.3 });
+
+        timelineItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = index % 2 === 0 ? 'translateX(-50px)' : 'translateX(50px)';
+            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(item);
+        });
+    });
+</script>
+{% endblock %}

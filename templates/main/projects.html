@@ -1,0 +1,663 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Projects | Pranav C - Full Stack Developer{% endblock %}
+
+{% block content %}
+
+
+<!-- Projects List Page -->
+<main class="projects-page">
+    <!-- Hero Section -->
+    <section class="projects-hero-section" style="background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);">
+        <div class="container">
+            <div class="projects-hero-content">
+                <h1 class="projects-title">My Projects</h1>
+                <p class="projects-subtitle">A showcase of my work, from web applications to full-stack solutions</p>
+                
+                <!-- Stats -->
+                <div class="projects-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ projects|length }}+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">10+</div>
+                        <div class="stat-label">Technologies</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-grid-section">
+        <div class="container">
+            <!-- Filter Buttons -->
+            <div class="projects-filter">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="web">Web Apps</button>
+                <button class="filter-btn" data-filter="fullstack">Full Stack</button>
+                <button class="filter-btn" data-filter="django">Django</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="projects-list-grid">
+                {% for project in projects %}
+                <div class="project-item" 
+                     data-category="{% if 'web' in project.project_type|lower %}web{% elif 'django' in project.technologies.all|join:','|lower %}django{% elif 'python' in project.technologies.all|join:','|lower %}python{% else %}fullstack{% endif %}">
+                    
+                    <!-- Project Image -->
+                    <div class="project-image-container">
+                        {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                        {% else %}
+                        <div class="project-image-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        {% endif %}
+                        <div class="project-overlay">
+                            <a href="{% url 'project_detail' project_id=project.id %}" class="view-project-btn">
+                                View Project <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project Info -->
+                    <div class="project-info">
+                        <div class="project-meta">
+                            <span class="project-category">{{ project.project_type|default:"Full Stack" }}</span>
+                            <span class="project-date">
+                                {% if project.created_at %}
+                                    {{ project.created_at|date:"M Y" }}
+                                {% else %}
+                                    2024
+                                {% endif %}
+                            </span>
+                        </div>
+                        
+                        <h3 class="project-title">
+                            <a href="{% url 'project_detail' project_id=project.id %}">{{ project.title }}</a>
+                        </h3>
+                        
+                        <p class="project-description">{{ project.short_description }}</p>
+                        
+                        <!-- Technologies -->
+                        <div class="project-technologies">
+                            {% for tech in project.technologies.all|slice:":3" %}
+                            <span class="tech-tag">{{ tech.name }}</span>
+                            {% endfor %}
+                            {% if project.technologies.count > 3 %}
+                            <span class="tech-tag more">+{{ project.technologies.count|add:"-3" }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Project Links -->
+                        <div class="project-links">
+                            {% if project.project_url %}
+                            <a href="{{ project.project_url }}" class="project-link" target="_blank" title="Live Demo">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            {% endif %}
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" class="project-link" target="_blank" title="Source Code">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'project_detail' project_id=project.id %}" class="project-link details" title="View Details">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <!-- Empty State -->
+                <div class="empty-projects">
+                    <div class="empty-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>No Projects Yet</h3>
+                    <p>Projects are coming soon! Stay tuned.</p>
+                    <a href="{% url 'index' %}" class="btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Home
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="projects-cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Have a Project in Mind?</h2>
+                <p>Let's collaborate and bring your ideas to life with cutting-edge technology</p>
+                <a href="{% url 'index' %}#contact" class="cta-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Start a Conversation</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- CSS Styles -->
+<style>
+    /* Projects Page */
+    .projects-page {
+        min-height: 100vh;
+        background: #0a0a0a;
+        color: #fff;
+    }
+
+    /* Hero Section */
+    .projects-hero-section {
+        padding: 120px 0 80px;
+        position: relative;
+    }
+
+    .projects-hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(255,255,255,0.1) 50%, 
+            transparent 100%);
+    }
+
+    .projects-hero-content {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .projects-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 4rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .projects-subtitle {
+        color: #aaa;
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Stats */
+    .projects-stats {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        margin-top: 40px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-family: 'Inter', sans-serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        color: #888;
+        font-size: 0.9rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* Projects Grid Section */
+    .projects-grid-section {
+        padding: 80px 0;
+    }
+
+    /* Filter */
+    .projects-filter {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+
+    .filter-btn {
+        padding: 12px 24px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 30px;
+        color: #aaa;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+    }
+
+    .filter-btn.active {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Projects Grid */
+    .projects-list-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 40px;
+    }
+
+    /* Project Item */
+    .project-item {
+        background: rgba(20,20,20,0.8);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .project-item:hover {
+        transform: translateY(-10px);
+        border-color: rgba(255,255,255,0.1);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    /* Project Image */
+    .project-image-container {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .project-item:hover .project-image {
+        transform: scale(1.05);
+    }
+
+    .project-image-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #111 0%, #222 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.1);
+        font-size: 3rem;
+    }
+
+    /* Project Overlay */
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .project-item:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .view-project-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: #fff;
+        color: #0a0a0a;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .view-project-btn:hover {
+        background: rgba(255,255,255,0.9);
+        transform: translateY(-3px);
+    }
+
+    /* Project Info */
+    .project-info {
+        padding: 25px;
+    }
+
+    .project-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .project-category {
+        color: #888;
+        font-size: 0.85rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .project-date {
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    .project-title {
+        margin: 0 0 15px 0;
+    }
+
+    .project-title a {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .project-title a:hover {
+        color: #aaa;
+    }
+
+    .project-description {
+        color: #aaa;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+    }
+
+    /* Technologies */
+    .project-technologies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .tech-tag {
+        padding: 6px 12px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: #aaa;
+        font-size: 0.8rem;
+    }
+
+    .tech-tag.more {
+        background: transparent;
+        border-style: dashed;
+    }
+
+    /* Project Links */
+    .project-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .project-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        color: #aaa;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .project-link:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    .project-link.details:hover {
+        background: rgba(255,255,255,0.15);
+    }
+
+    /* Empty State */
+    .empty-projects {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: rgba(255,255,255,0.1);
+        margin-bottom: 20px;
+    }
+
+    .empty-projects h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .empty-projects p {
+        color: #aaa;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    /* CTA Section */
+    .projects-cta-section {
+        padding: 80px 0;
+        background: rgba(255,255,255,0.02);
+        border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .cta-content {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .cta-content h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .cta-content p {
+        color: #aaa;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 32px;
+        background: #fff;
+        color: #0a0a0a;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .cta-btn:hover {
+        background: rgba(255,255,255,0.9);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .projects-title {
+            font-size: 3.5rem;
+        }
+        
+        .projects-list-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .projects-hero-section {
+            padding: 100px 0 60px;
+        }
+        
+        .projects-title {
+            font-size: 2.8rem;
+        }
+        
+        .projects-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .projects-stats {
+            gap: 40px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+        }
+        
+        .projects-filter {
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .projects-list-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .projects-title {
+            font-size: 2.2rem;
+        }
+        
+        .projects-stats {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .cta-content h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- JavaScript for Filtering -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectItems = document.querySelectorAll('.project-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                
+                // Filter projects
+                projectItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Animate projects on load
+        setTimeout(() => {
+            projectItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }, 500);
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
