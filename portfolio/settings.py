@@ -12,12 +12,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '.pythonanywhere.com',  # For PythonAnywhere
-    # Add your custom domain if you have one
-]
+ALLOWED_HOSTS = ['https://pranavratheesh.pythonanywhere.com']
 
 # Add your PythonAnywhere username when you get it
 PYTHONANYWHERE_USERNAME = config('PYTHONANYWHERE_USERNAME', default='')
