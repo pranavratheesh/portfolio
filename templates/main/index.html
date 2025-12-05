@@ -22,7 +22,8 @@
                             <i class="fab fa-github"></i>
                             GITHUB
                         </a>
-                        <a href="www.linkedin.com/in/pranavratheesh" class="btn-slide">
+                        <a href="https://www.linkedin.com/in/pranavratheesh" class="btn-slide" target="_blank">
+
                             <i class="fab fa-linkedin-in"></i>
                             LINKEDIN
                         </a>
@@ -32,39 +33,39 @@
         </div>
 
         <!-- SLIDE 2 -->
-       <div class="swiper-slide">
-    <div class="big-word">BUILD</div>
-    <div class="slide-content">
-        <img src="{% static 'images/pranav5.png' %}" class="cutout-img" alt="Build Projects">
-        <div class="text-block">
-            <h1>I Build Scalable Products</h1>
-            <p>Turning complex ideas into elegant, production-ready applications that perform at scale.</p>
-            <div class="slide-ctas">
-                <a href="#projects" class="btn-slide btn-slide-primary">
-                    <i class="fas fa-layer-group"></i>
-                    VIEW PROJECTS
-                </a>
+        <div class="swiper-slide">
+            <div class="big-word">BUILD</div>
+            <div class="slide-content">
+                <img src="{% static 'images/pranav5.png' %}" class="cutout-img" alt="Build Projects">
+                <div class="text-block">
+                    <h1>I Build Scalable Products</h1>
+                    <p>Turning complex ideas into elegant, production-ready applications that perform at scale.</p>
+                    <div class="slide-ctas">
+                        <a href="#projects" class="btn-slide btn-slide-primary">
+                            <i class="fas fa-layer-group"></i>
+                            VIEW PROJECTS
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="swiper-slide">
-    <div class="big-word">INNOVATE</div>
-    <div class="slide-content">
-        <img src="{% static 'images/pranav6.png' %}" class="cutout-img" alt="Innovate Solutions">
-        <div class="text-block">
-            <h1>I Solve Problems Elegantly</h1>
-            <p>Writing clean, efficient code that enhances user experience and drives performance.</p>
-            <div class="slide-ctas">
-                <a href="#contact" class="btn-slide btn-slide-primary">
-                    <i class="fas fa-paper-plane"></i>
-                    LET'S TALK
-                </a>
+        <div class="swiper-slide">
+            <div class="big-word">INNOVATE</div>
+            <div class="slide-content">
+                <img src="{% static 'images/pranav6.png' %}" class="cutout-img" alt="Innovate Solutions">
+                <div class="text-block">
+                    <h1>I Solve Problems Elegantly</h1>
+                    <p>Writing clean, efficient code that enhances user experience and drives performance.</p>
+                    <div class="slide-ctas">
+                        <a href="#contact" class="btn-slide btn-slide-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            LET'S TALK
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 
     <!-- Controls -->
@@ -100,7 +101,7 @@
             {% with first_tech=project.get_technologies_list.0|default:"django"|lower %}
             <div class="project-card card-{{ forloop.counter }} {{ first_tech }}"
                 data-category="{% if forloop.counter|divisibleby:2 %}web{% else %}fullstack{% endif %}">
-            {% endwith %}
+                {% endwith %}
 
                 <!-- Project Card Header -->
                 <div class="card-header">
@@ -162,30 +163,29 @@
                         </div>
                         <div class="tech-tags">
                             {% for tech in project.get_technologies_list %}
-                                {% if forloop.counter <= 4 %}
-                                <span class="tech-tag tag-animate" data-tech="{{ tech }}">
-                                    <span class="tech-icon">
-                                        {% if "python" in tech|lower %}
-                                        <i class="fab fa-python"></i>
-                                        {% elif "django" in tech|lower %}
-                                        <i class="fas fa-database"></i>
-                                        {% elif "react" in tech|lower %}
-                                        <i class="fab fa-react"></i>
-                                        {% elif "js" in tech|lower or "javascript" in tech|lower %}
-                                        <i class="fab fa-js-square"></i>
-                                        {% else %}
-                                        <i class="fas fa-code"></i>
-                                        {% endif %}
-                                    </span>
-                                    {{ tech }}
+                            {% if forloop.counter <= 4 %} <span class="tech-tag tag-animate" data-tech="{{ tech }}">
+                                <span class="tech-icon">
+                                    {% if "python" in tech|lower %}
+                                    <i class="fab fa-python"></i>
+                                    {% elif "django" in tech|lower %}
+                                    <i class="fas fa-database"></i>
+                                    {% elif "react" in tech|lower %}
+                                    <i class="fab fa-react"></i>
+                                    {% elif "js" in tech|lower or "javascript" in tech|lower %}
+                                    <i class="fab fa-js-square"></i>
+                                    {% else %}
+                                    <i class="fas fa-code"></i>
+                                    {% endif %}
+                                </span>
+                                {{ tech }}
                                 </span>
                                 {% endif %}
-                            {% endfor %}
-                            {% if project.get_technologies_list|length > 4 %}
-                            <span class="tech-tag more-tag">
-                                +{{ project.get_technologies_list|length|add:"-4" }} more
-                            </span>
-                            {% endif %}
+                                {% endfor %}
+                                {% if project.get_technologies_list|length > 4 %}
+                                <span class="tech-tag more-tag">
+                                    +{{ project.get_technologies_list|length|add:"-4" }} more
+                                </span>
+                                {% endif %}
                         </div>
                     </div>
 
@@ -485,10 +485,11 @@
                 <!-- Logo Column -->
                 <div class="experience-logo">
                     {% if exp.company_logo %}
-                    <img src="{{ exp.company_logo.url }}" alt="{{ exp.company }} logo" 
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-fallback\'>{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper }}{% endif %}</div>';">
+                    <img src="{{ exp.company_logo.url }}" alt="{{ exp.company }} logo"
+                        onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-fallback\'>{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper }}{% endif %}</div>';">
                     {% else %}
-                    <div class="logo-fallback">{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper }}{% endif %}</div>
+                    <div class="logo-fallback">{{ exp.company.0|upper }}{% if exp.company.1 %}{{ exp.company.1|upper
+                        }}{% endif %}</div>
                     {% endif %}
                 </div>
 
@@ -527,12 +528,13 @@
                 </div>
             </div>
             {% empty %}
-            
+
             <!-- Learning Journey (For Students) -->
             <div class="learning-journey">
                 <div class="learning-header">
                     <svg viewBox="0 0 24 24" width="24" height="24" class="learning-icon">
-                        <path fill="currentColor" d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                        <path fill="currentColor"
+                            d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
                     </svg>
                     <div>
                         <h3>Learning Journey</h3>
@@ -580,10 +582,8 @@
 <!-- Contact Section -->
 <div id="contact" class="contact-section" style="text-align: center; margin: 2rem 0;">
     <h3 style="color: #070707; margin-bottom: 1rem;">Let's Connect</h3>
-    
-    <a href="mailto:pranavc493@gmail.com" 
-       class="contact-btn email-btn" 
-       style="display: inline-block; 
+
+    <a href="mailto:pranavc493@gmail.com" class="contact-btn email-btn" style="display: inline-block; 
               background: black;
               color: white;
               text-decoration: none;
@@ -596,11 +596,9 @@
         <i class="fas fa-envelope"></i>
         Email Me
     </a>
-    
-    <a href="https://wa.me/917736707020?text=Hi%20Pranav,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect" 
-       target="_blank" 
-       class="contact-btn whatsapp-btn" 
-       style="display: inline-block; 
+
+    <a href="https://wa.me/917736707020?text=Hi%20Pranav,%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect"
+        target="_blank" class="contact-btn whatsapp-btn" style="display: inline-block; 
               background: black;
               color: white;
               text-decoration: none;
